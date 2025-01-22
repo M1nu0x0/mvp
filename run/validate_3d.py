@@ -29,6 +29,7 @@ import argparse
 import os
 import pprint
 
+import _init_paths
 from core.config import config
 from core.config import update_config
 from core.function import validate_3d
@@ -38,7 +39,6 @@ from mmcv.runner import get_dist_info
 from torch.utils.data import DistributedSampler
 from models.util.misc import is_main_process, collect_results
 
-import _init_paths
 import dataset
 import models
 
@@ -139,15 +139,22 @@ def main():
 
         if is_main_process():
             actor_pcp, avg_pcp, _, recall = test_loader.dataset.evaluate(preds)
-            msg = '     | Actor 1 | Actor 2 | Actor 3 | Average | \n' \
-                  ' PCP |  {pcp_1:.2f}  |  {pcp_2:.2f}  |  {pcp_3:.2f}  ' \
-                  '|  {pcp_avg:.2f}  |\t Recall@500mm: {recall:.4f}'.\
-                format(pcp_1=actor_pcp[0] * 100,
-                       pcp_2=actor_pcp[1] * 100,
-                       pcp_3=actor_pcp[2] * 100,
-                       pcp_avg=avg_pcp * 100,
-                       recall=recall)
-            logger.info(msg)
+            # msg = '     | Actor 1 | Actor 2 | Actor 3 | Average | \n' \
+            #       ' PCP |  {pcp_1:.2f}  |  {pcp_2:.2f}  |  {pcp_3:.2f}  ' \
+            #       '|  {pcp_avg:.2f}  |\t Recall@500mm: {recall:.4f}'.\
+            #     format(pcp_1=actor_pcp[0] * 100,
+            #            pcp_2=actor_pcp[1] * 100,
+            #            pcp_3=actor_pcp[2] * 100,
+            #            pcp_avg=avg_pcp * 100,
+            #            recall=recall)
+            # msg = ' | Actor 1 | Actor 2 | Actor 3 | Average | \n | {:.2f} | {:.2f} | {:.2f} | {:.2f} |'.format(actor_pcp[0]*100, actor_pcp[1]*100, actor_pcp[2]*100, avg_pcp*100)
+
+            logger.info('actor_pcp')
+            logger.info(actor_pcp)
+            logger.info('avg_pcp')
+            logger.info(avg_pcp)
+            logger.info('recall')
+            logger.info(recall)
 
 
 if __name__ == '__main__':

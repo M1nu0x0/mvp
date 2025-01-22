@@ -5,7 +5,8 @@ CUDNN:
 BACKBONE_MODEL: 'pose_resnet'
 MODEL: 'multi_person_posenet'
 DATA_DIR: ''
-GPUS: '0,1,2,3,4,5,6,7'
+# GPUS: '0,1,2,3,4,5,6,7'
+GPUS: '0'
 OUTPUT_DIR: 'output'
 LOG_DIR: 'log'
 WORKERS: 4
@@ -18,7 +19,8 @@ DATASET:
   DATA_FORMAT: jpg
   DATA_AUGMENTATION: False
   FLIP: False
-  ROOT: 'data/panoptic-toolbox/data'
+  # ROOT: 'data/panoptic-toolbox/data'
+  ROOT: '../panoptic-toolbox/'
   ROT_FACTOR: 45
   SCALE_FACTOR: 0.35
   TEST_SUBSET: 'validation'
