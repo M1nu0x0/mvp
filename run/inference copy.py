@@ -66,12 +66,13 @@ def main():
     normalize = transforms.Normalize(
         mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 
-    test_dataset = eval('dataset.' + config.DATASET.TEST_DATASET)(
-        config, config.DATASET.TEST_SUBSET, False,
-        transforms.Compose([
-            transforms.ToTensor(),
-            normalize,
-        ]))
+    test_dataset = eval('dataset.' + 'aisl_iter')(
+        config.DATASET.ROOT,
+        cam_list=[i for i in range(1, 5)],
+        transform=transforms.Compose([transforms.ToTensor(), normalize]),
+        start=120,
+        end=None,
+        )
 
     if args.distributed:
         rank, world_size = get_dist_info()
@@ -80,12 +81,20 @@ def main():
     else:
         sampler_val = torch.utils.data.SequentialSampler(test_dataset)
 
-    test_loader = torch.utils.data.DataLoader(
-        test_dataset,
-        batch_size=config.TEST.BATCH_SIZE,
-        sampler=sampler_val,
-        pin_memory=True,
-        num_workers=config.WORKERS)
+    if isinstance(test_dataset, torch.utils.data.IterableDataset):
+        test_loader = torch.utils.data.DataLoader(
+            test_dataset,
+            batch_size=config.TEST.BATCH_SIZE,
+            # pin_memory=True,
+            # num_workers=config.WORKERS,
+        )
+    else:
+        test_loader = torch.utils.data.DataLoader(
+            test_dataset,
+            batch_size=config.TEST.BATCH_SIZE,
+            sampler=sampler_val,
+            pin_memory=True,
+            num_workers=config.WORKERS)
 
     num_views = test_dataset.num_views
     assert config.DATASET.CAMERA_NUM == num_views, \
