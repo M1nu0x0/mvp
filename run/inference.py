@@ -130,21 +130,21 @@ def main():
                 
                 output = model(views=inputs, meta=meta)
                 
-        # preds_single, meta_image_files_single = validate_3d(
-        #     config, model, test_loader, final_output_dir, thr,
-        #     num_views=num_views)
-        # preds = collect_results(preds_single, len(test_dataset))
+        preds_single, meta_image_files_single = validate_3d(
+            config, model, test_loader, final_output_dir, thr,
+            num_views=num_views)
+        preds = collect_results(preds_single, len(test_dataset))
 
-        # if is_main_process():
-        #     actor_pcp, avg_pcp, mpjpe, recall = test_loader.dataset.evaluate(preds)
-        #     logger.info('actor_pcp')
-        #     logger.info(actor_pcp)
-        #     logger.info('avg_pcp')
-        #     logger.info(avg_pcp)
-        #     logger.info('mpjpe')
-        #     logger.info(mpjpe)
-        #     logger.info('recall')
-        #     logger.info(recall)
+        if is_main_process():
+            actor_pcp, avg_pcp, mpjpe, recall = test_loader.dataset.evaluate(preds)
+            logger.info('actor_pcp')
+            logger.info(actor_pcp)
+            logger.info('avg_pcp')
+            logger.info(avg_pcp)
+            logger.info('mpjpe')
+            logger.info(mpjpe)
+            logger.info('recall')
+            logger.info(recall)
 
 
 def setup_distrubuted():

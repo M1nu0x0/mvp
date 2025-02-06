@@ -61,7 +61,7 @@ def get_host_info():
 def parse_args():
     parser = argparse.ArgumentParser(description='Train keypoints network')
     parser.add_argument('--cfg', help='experiment configure file name',
-                        required=True, type=str)
+                        default='configs/panoptic/best_model_config.yaml', type=str)
     parser.add_argument('--device', default='cuda',
                         help='device to use for training / testing')
     parser.add_argument('--seed', default=42, type=int)
@@ -329,5 +329,32 @@ def main():
         torch.save(model.module.state_dict(), final_model_state_file)
 
 
+def setup_distrubuted():
+    if "RANK" not in os.environ:
+        os.environ["RANK"] = "0"
+    if "WORLD_SIZE" not in os.environ:
+        os.environ["WORLD_SIZE"] = "1"
+    if "LOCAL_RANK" not in os.environ:
+        os.environ["LOCAL_RANK"] = "0"
+    if "MASTER_ADDR" not in os.environ:
+        os.environ["MASTER_ADDR"] = "127.0.0.1"
+    if "MASTER_PORT" not in os.environ:
+        os.environ["MASTER_PORT"] = "29500"
+    
+    rank = int(os.environ["RANK"])
+    world_size = int(os.environ["WORLD_SIZE"])
+    local_rank = int(os.environ["LOCAL_RANK"])
+
+    torch.cuda.set_device(local_rank)
+
+    # dist.init_process_group(
+    #     backend="nccl",  # 또는 "gloo" (CPU만 사용 시)
+    #     rank=rank,
+    #     world_size=world_size,
+    #     init_method="env://"
+    # )
+
+
 if __name__ == '__main__':
+    setup_distrubuted()
     main()

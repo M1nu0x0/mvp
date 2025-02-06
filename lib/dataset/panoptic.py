@@ -98,6 +98,7 @@ class Panoptic(JointsDataset):
             self.cam_list = [(0, 12), (0, 6), (0, 23), (0, 13), (0, 3)][
                             :self.num_views]
             self.num_views = len(self.cam_list)
+            print('num_views, cam_list: {} {}'.format(self.num_views, self.cam_list))
         elif self.image_set == 'validation':
             self.sequence_list = VAL_LIST
             self._interval = 12

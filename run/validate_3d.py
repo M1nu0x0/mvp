@@ -138,7 +138,7 @@ def main():
         preds = collect_results(preds_single, len(test_dataset))
 
         if is_main_process():
-            actor_pcp, avg_pcp, _, recall = test_loader.dataset.evaluate(preds)
+            actor_pcp, avg_pcp, mpjpe, recall = test_loader.dataset.evaluate(preds)
             # msg = '     | Actor 1 | Actor 2 | Actor 3 | Average | \n' \
             #       ' PCP |  {pcp_1:.2f}  |  {pcp_2:.2f}  |  {pcp_3:.2f}  ' \
             #       '|  {pcp_avg:.2f}  |\t Recall@500mm: {recall:.4f}'.\
@@ -155,6 +155,8 @@ def main():
             logger.info(avg_pcp)
             logger.info('recall')
             logger.info(recall)
+            logger.info('mpjpe')
+            logger.info(mpjpe)
 
 
 if __name__ == '__main__':

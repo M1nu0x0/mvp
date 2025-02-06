@@ -13,7 +13,6 @@ from concurrent.futures import ThreadPoolExecutor
 import cv2
 import numpy as np
 from torch.utils.data import Dataset, IterableDataset
-from cv2.typing import MatLike
 
 from utils.transforms import get_affine_transform
 from utils.transforms import affine_transform, get_scale
