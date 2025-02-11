@@ -10,20 +10,18 @@ RUN git clone https://github.com/M1nu0x0/mvp.git && \
     pip3 install -r requirements2.txt
 
 # 모델 컴파일 실행
-RUN python3 ./lib/models/ops/setup.py build install
+RUN python3 mvp/lib/models/ops/setup.py build install
 
 # 모델 다운로드를 위한 디렉터리 생성 및 gdown 설치
-RUN mkdir -p ./models && \
-    cd ./models && \
+RUN mkdir -p mvp/models && \
+    cd mvp/models && \
     pip3 install gdown && \
-    gdown --id 1DfdZfUtN7mjCR0wSND_pAdKU5E6y12cw && \
-    cd ..
+    gdown --id 1DfdZfUtN7mjCR0wSND_pAdKU5E6y12cw
 
 # 데이터 디렉터리 생성 및 데이터 클론
-RUN mkdir -p ./data && \
-    cd ./data && \
+RUN mkdir -p mvp/data && \
+    cd mvp/data && \
     git clone https://github.com/CMU-Perceptual-Computing-Lab/panoptic-toolbox.git
-    cd ..
 
 # 작업 디렉토리 설정
 WORKDIR /mvp
