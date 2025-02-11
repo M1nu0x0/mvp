@@ -5,3 +5,4 @@ output/
 Deformable.egg-info/
 dist/
 build/
+mmcv/
