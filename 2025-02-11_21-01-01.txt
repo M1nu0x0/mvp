@@ -1,0 +1,241 @@
+(mvp2)  aisl@aisl-MS-7E01  ~/mvp   main ±  ./run/val.sh
+/home/aisl/anaconda3/envs/mvp2/lib/python3.12/site-packages/mmcv/__init__.py:20: UserWarning: On January 1, 2023, MMCV will release v2.0.0, in which it will remove components related to the training process and add a data transformation module. In addition, it will rename the package names mmcv to mmcv-lite and mmcv-full to mmcv. See https://github.com/open-mmlab/mmcv/blob/master/docs/en/compatibility.md for more details.
+  warnings.warn(
+=> creating /home/aisl/mvp/output/panoptic/multi_person_posenet_50/best_model_config
+=> creating /home/aisl/mvp/log/panoptic/multi_person_posenet_50/best_model_config2025-02-11-20-52
+| distributed init (rank 0): env://
+[rank0]:[W211 20:52:58.224630931 ProcessGroupNCCL.cpp:4115] [PG ID 0 PG GUID 0 Rank 0]  using GPU 0 to perform barrier as devices used by this process are currently unknown. This can potentially cause a hang if this rank to GPU mapping is incorrect.Specify device_ids in barrier() to force use of a particular device,or call init_process_group() with a device_id.
+git:
+  sha: 7f4548850fa6aa36a096d38a1b1498ed56df4e2a, status: has uncommited changes, branch: main
+
+Namespace(cfg='configs/panoptic/best_model_config.yaml', device='cuda', seed=42, world_size=1, dist_url='env://', weight_decay=0.0001, model_path='models/model_best_5view.pth.tar', rank=0, gpu=0, distributed=True, dist_backend='nccl')
+{'BACKBONE_MODEL': 'pose_resnet',
+ 'CUDNN': {'BENCHMARK': True, 'DETERMINISTIC': False, 'ENABLED': True},
+ 'DATASET': {'BBOX': 2000,
+             'CAMERA_NUM': 5,
+             'COLOR_RGB': True,
+             'CROP': True,
+             'DATA_AUGMENTATION': False,
+             'DATA_FORMAT': 'jpg',
+             'DATA_ROOT': None,
+             'FLIP': False,
+             'PESUDO_GT': None,
+             'ROOT': '../panoptic-toolbox/',
+             'ROOTIDX': 2,
+             'ROT_FACTOR': 45,
+             'SCALE_FACTOR': 0.35,
+             'TEST_DATASET': 'panoptic',
+             'TEST_SUBSET': 'validation',
+             'TRAIN_DATASET': 'panoptic',
+             'TRAIN_SUBSET': 'train'},
+ 'DATA_DIR': '',
+ 'DEBUG': {'DEBUG': True,
+           'SAVE_BATCH_IMAGES_GT': True,
+           'SAVE_BATCH_IMAGES_PRED': True,
+           'SAVE_HEATMAPS_GT': True,
+           'SAVE_HEATMAPS_PRED': True},
+ 'DECODER': {'REGRESS_CUBE_SIZE': [20, 20, 20],
+             'REGRESS_GRID_SIZE': [200.0, 200.0, 200.0],
+             'activation': 'relu',
+             'agnostic_v2vnet': False,
+             'aux_loss': True,
+             'convert_joint_format_indices': None,
+             'd_model': 256,
+             'dec_n_points': 4,
+             'detach_refpoints_cameraprj_firstlayer': True,
+             'dim_feedforward': 1024,
+             'dropout': 0.1,
+             'epipolar_encoder': False,
+             'fuse_view_feats': 'cat_proj',
+             'inference_conf_thr': [0.1],
+             'loss_heatmap2d': 2.0,
+             'loss_joint_type': 'l1',
+             'loss_pose_normalize': False,
+             'loss_pose_perbone': 5.0,
+             'loss_pose_perjoint': 5.0,
+             'loss_pose_perjoint_aligned': 5.0,
+             'loss_weight_loss_ce': 2.0,
+             'lr_decay_epoch': [40],
+             'lr_linear_proj_mult': 0.1,
+             'match_coord': 'norm',
+             'nhead': 8,
+             'num_decoder_layers': 6,
+             'num_feature_levels': 1,
+             'num_instance': 10,
+             'num_keypoints': 15,
+             'num_views': 5,
+             'optimizer': 'adam',
+             'pose_embed_layer': 3,
+             'pred_class_fuse': 'mean',
+             'pred_conf_threshold': 0.5,
+             'projattn_posembed_mode': 'use_rayconv',
+             'query_adaptation': True,
+             'query_embed_type': 'person_joint',
+             'return_intermediate_dec': True,
+             'use_feat_level': [0, 1, 2],
+             'use_loss_pose_perbone': False,
+             'use_loss_pose_perjoint_aligned': False,
+             'use_loss_pose_perprojection': True,
+             'use_quality_focal_loss': False,
+             'voxel_regression_type': 'perjoint',
+             'with_pose_refine': True},
+ 'GPUS': '0',
+ 'LOG_DIR': 'log',
+ 'LOSS': {'USE_DIFFERENT_JOINTS_WEIGHT': False, 'USE_TARGET_WEIGHT': True},
+ 'MODEL': 'multi_person_posenet',
+ 'MODEL_EXTRA': {'DECONV': {'CAT_OUTPUT': True,
+                            'KERNEL_SIZE': 4,
+                            'NUM_BASIC_BLOCKS': 4,
+                            'NUM_CHANNELS': 32,
+                            'NUM_DECONVS': 1},
+                 'FINAL_CONV_KERNEL': 1,
+                 'PRETRAINED_LAYERS': ['*'],
+                 'STAGE2': {'BLOCK': 'BASIC',
+                            'FUSE_METHOD': 'SUM',
+                            'NUM_BLOCKS': [4, 4],
+                            'NUM_BRANCHES': 2,
+                            'NUM_CHANNELS': [48, 96],
+                            'NUM_MODULES': 1},
+                 'STAGE3': {'BLOCK': 'BASIC',
+                            'FUSE_METHOD': 'SUM',
+                            'NUM_BLOCKS': [4, 4, 4],
+                            'NUM_BRANCHES': 3,
+                            'NUM_CHANNELS': [48, 96, 192],
+                            'NUM_MODULES': 4},
+                 'STAGE4': {'BLOCK': 'BASIC',
+                            'FUSE_METHOD': 'SUM',
+                            'NUM_BLOCKS': [4, 4, 4, 4],
+                            'NUM_BRANCHES': 4,
+                            'NUM_CHANNELS': [48, 96, 192, 384],
+                            'NUM_MODULES': 3},
+                 'STEM_INPLANES': 64},
+ 'MULTI_PERSON': {'INITIAL_CUBE_SIZE': [80, 80, 20],
+                  'MAX_PEOPLE_NUM': 10,
+                  'SPACE_CENTER': [0.0, -500.0, 800.0],
+                  'SPACE_SIZE': [8000.0, 8000.0, 2000.0],
+                  'THRESHOLD': 0.3},
+ 'NETWORK': {'AGGRE': True,
+             'BETA': 100.0,
+             'HEATMAP_SIZE': array([240, 128]),
+             'IMAGE_SIZE': array([960, 512]),
+             'INPUT_SIZE': 512,
+             'NUM_JOINTS': 15,
+             'PRETRAINED': '',
+             'PRETRAINED_BACKBONE': 'models/pose_resnet50_panoptic.pth.tar',
+             'SIGMA': 3,
+             'TARGET_TYPE': 'gaussian',
+             'USE_GT': False},
+ 'OUTPUT_DIR': 'output',
+ 'PICT_STRUCT': {'CUBE_SIZE': [64, 64, 64],
+                 'DEBUG': False,
+                 'FIRST_NBINS': 16,
+                 'GRID_SIZE': [2000.0, 2000.0, 2000.0],
+                 'LIMB_LENGTH_TOLERANCE': 150,
+                 'PAIRWISE_FILE': '',
+                 'RECUR_DEPTH': 10,
+                 'RECUR_NBINS': 2,
+                 'SHOW_CROPIMG': False,
+                 'SHOW_HEATIMG': False,
+                 'SHOW_ORIIMG': False,
+                 'TEST_PAIRWISE': False},
+ 'POSE_RESNET': {'DECONV_WITH_BIAS': False,
+                 'FINAL_CONV_KERNEL': 1,
+                 'NUM_DECONV_FILTERS': [256, 256, 256],
+                 'NUM_DECONV_KERNELS': [4, 4, 4],
+                 'NUM_DECONV_LAYERS': 3,
+                 'NUM_LAYERS': 50},
+ 'PRINT_FREQ': 100,
+ 'SMPL': {'concat_smpl': True,
+          'init_param_file': 'data/neutral_smpl_mean_params.h5',
+          'loss_smpl_2d': 1.0,
+          'loss_smpl_3d': 1.0,
+          'loss_smpl_adv': 1.0,
+          'pred_smpl': False,
+          'pred_smpl_fuse': 'mean_before_pred',
+          'smpl_embed_layer': 3,
+          'smpl_file': 'data/smpl'},
+ 'TEST': {'BATCH_SIZE': 1,
+          'BBOX_FILE': '',
+          'BBOX_THRE': 1.0,
+          'DETECTOR': 'fpn_dcn',
+          'DETECTOR_DIR': '',
+          'FLIP_TEST': False,
+          'HEATMAP_LOCATION_FILE': 'predicted_heatmaps.h5',
+          'IMAGE_THRE': 0.1,
+          'IN_VIS_THRE': 0.0,
+          'MATCH_IOU_THRE': 0.3,
+          'MODEL_FILE': 'model_best.pth.tar',
+          'NMS_THRE': 0.6,
+          'OKS_THRE': 0.5,
+          'POST_PROCESS': False,
+          'SHIFT_HEATMAP': False,
+          'STATE': 'best',
+          'USE_GT_BBOX': False},
+ 'TRAIN': {'BATCH_SIZE': 1,
+           'BEGIN_EPOCH': 0,
+           'END_EPOCH': 200,
+           'FINETUNE_MODEL': None,
+           'GAMMA1': 0.99,
+           'GAMMA2': 0.0,
+           'LR': 0.0001,
+           'LR_FACTOR': 0.1,
+           'LR_STEP': [20],
+           'MOMENTUM': 0.9,
+           'NESTEROV': False,
+           'OPTIMIZER': 'adam',
+           'RESUME': False,
+           'SHUFFLE': True,
+           'WD': 0.0001,
+           'clip_max_norm': 0.1},
+ 'WORKERS': 4}
+=> Loading data ..
+db_file: group_validation_cam5.pkl
+info seq list: ['160906_pizza1', '160422_haggling1', '160906_ian5', '160906_band4']
+self seq list: ['160906_pizza1', '160422_haggling1', '160906_ian5', '160906_band4']
+=> Constructing models ..
+=> init weights from normal distribution
+=> load models state models/model_best_5view.pth.tar
+/home/aisl/mvp/./run/validate_3d.py:124: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.module.load_state_dict(torch.load(args.model_path))
+/home/aisl/anaconda3/envs/mvp2/lib/python3.12/site-packages/torch/functional.py:534: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at ../aten/src/ATen/native/TensorShape.cpp:3595.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+/home/aisl/mvp/run/../lib/utils/cameras.py:51: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  f = torch.tensor(torch.stack([fx, fy], dim=2),
+/home/aisl/anaconda3/envs/mvp2/lib/python3.12/site-packages/torch/nn/functional.py:4902: UserWarning: Default grid_sample and affine_grid behavior has changed to align_corners=False since 1.3.0. Please specify align_corners=True if the old behavior is desired. See the documentation of grid_sample for details.
+  warnings.warn(
+Test: [0/2580]	Time: 3.528s (3.528s)	Speed: 1.4 samples/s	Data: 0.328s (0.328s)	Memory 358361088.0
+Test: [100/2580]	Time: 0.057s (0.095s)	Speed: 87.1 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [200/2580]	Time: 0.057s (0.079s)	Speed: 87.4 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [300/2580]	Time: 0.057s (0.074s)	Speed: 87.5 samples/s	Data: 0.000s (0.003s)	Memory 358361088.0
+Test: [400/2580]	Time: 0.058s (0.071s)	Speed: 86.3 samples/s	Data: 0.000s (0.003s)	Memory 358361088.0
+Test: [500/2580]	Time: 0.061s (0.069s)	Speed: 82.3 samples/s	Data: 0.000s (0.003s)	Memory 358361088.0
+Test: [600/2580]	Time: 0.058s (0.068s)	Speed: 86.2 samples/s	Data: 0.000s (0.003s)	Memory 358361088.0
+Test: [700/2580]	Time: 0.063s (0.067s)	Speed: 79.1 samples/s	Data: 0.001s (0.004s)	Memory 358361088.0
+Test: [800/2580]	Time: 0.057s (0.067s)	Speed: 87.5 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [900/2580]	Time: 0.058s (0.066s)	Speed: 86.3 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [1000/2580]	Time: 0.063s (0.066s)	Speed: 79.5 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [1100/2580]	Time: 0.059s (0.066s)	Speed: 84.1 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [1200/2580]	Time: 0.062s (0.066s)	Speed: 81.2 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [1300/2580]	Time: 0.062s (0.066s)	Speed: 81.2 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [1400/2580]	Time: 0.059s (0.066s)	Speed: 85.1 samples/s	Data: 0.000s (0.004s)	Memory 358361088.0
+Test: [1500/2580]	Time: 0.059s (0.066s)	Speed: 85.2 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [1600/2580]	Time: 0.061s (0.066s)	Speed: 81.8 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [1700/2580]	Time: 0.063s (0.066s)	Speed: 79.5 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [1800/2580]	Time: 0.064s (0.066s)	Speed: 78.0 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [1900/2580]	Time: 0.063s (0.066s)	Speed: 79.6 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [2000/2580]	Time: 0.065s (0.067s)	Speed: 76.9 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [2100/2580]	Time: 0.058s (0.067s)	Speed: 85.7 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [2200/2580]	Time: 0.058s (0.067s)	Speed: 86.9 samples/s	Data: 0.000s (0.005s)	Memory 358361088.0
+Test: [2300/2580]	Time: 0.058s (0.067s)	Speed: 85.8 samples/s	Data: 0.000s (0.006s)	Memory 358361088.0
+Test: [2400/2580]	Time: 0.063s (0.067s)	Speed: 79.0 samples/s	Data: 0.000s (0.006s)	Memory 358361088.0
+Test: [2500/2580]	Time: 0.058s (0.067s)	Speed: 85.9 samples/s	Data: 0.000s (0.006s)	Memory 358361088.0
+Test: [2579/2580]	Time: 0.055s (0.067s)	Speed: 90.7 samples/s	Data: 0.000s (0.006s)	Memory 358361088.0
+actor_pcp
+[np.float64(0.9234838278549002), np.float64(0.9659899029268939), np.float64(0.9715952438646599), np.float64(0.9747963268851765), np.float64(0.9758655243191128), np.float64(0.9765557313641305)]
+avg_pcp
+[np.float64(0.9360009083369321), np.float64(0.9705581437188153), np.float64(0.9755598488398775), np.float64(0.9786290769823474), np.float64(0.9795384779134495), np.float64(0.9802205286117762)]
+recall
+0.9821530067068319
+mpjpe
+15.701610197589451
+[rank0]:[W211 20:55:54.611945176 ProcessGroupNCCL.cpp:1250] Warning: WARNING: process group has NOT been destroyed before we destruct ProcessGroupNCCL. On normal program exit, the application should call destroy_process_group to ensure that any pending NCCL operations have finished in this process. In rare cases this process can exit before this point and block the progress of another member of the process group. This constraint has always been present,  but this warning has only been added since PyTorch 2.4 (function operator())
