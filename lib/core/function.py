@@ -36,6 +36,7 @@ logger = logging.getLogger(__name__)
 
 def train_3d(config, model, optimizer, loader, epoch,
              output_dir, device=torch.device('cuda'), num_views=5):
+    is_msg = False
     batch_time = AverageMeter()
     data_time = AverageMeter()
     loss_ce = AverageMeter()
@@ -110,43 +111,78 @@ def train_3d(config, model, optimizer, loader, epoch,
         batch_time.update(time_synchronized() - end)
         end = time_synchronized()
 
+        gpu_memory_usage = torch.cuda.memory_allocated(0)
+        msg = \
+            'Epoch: [{0}][{1}/{2}]\t' \
+            'Time: {batch_time.val:.3f}s ({batch_time.avg:.3f}s)\t' \
+            'Speed: {speed:.1f} samples/s\t' \
+            'Data: {data_time.val:.3f}s ' '({data_time.avg:.3f}s)\t' \
+            'loss_ce: {loss_ce.val:.7f} ' '({loss_ce.avg:.7f})\t' \
+            'class_error: {class_error.val:.7f} ' \
+            '({class_error.avg:.7f})\t' \
+            'loss_pose_perjoint: {loss_pose_perjoint.val:.6f} ' \
+            '({loss_pose_perjoint.avg:.6f})\t' \
+            'loss_pose_perbone: {loss_pose_perbone.val:.6f} ' \
+            '({loss_pose_perbone.avg:.6f})\t' \
+            'loss_pose_perprojection: {loss_pose_perprojection.val:.6f} ' \
+            '({loss_pose_perprojection.avg:.6f})\t' \
+            'cardinality_error: {cardinality_error.val:.6f} ' \
+            '({cardinality_error.avg:.6f})\t' \
+            'Memory {memory:.1f}\t'\
+            'gradnorm {gradnorm:.2f}'.format(
+                epoch, i, len(loader),
+                batch_time=batch_time,
+                speed=len(inputs) * inputs[0].size(0) / batch_time.val,
+                data_time=data_time,
+                loss_ce=loss_ce,
+                class_error=class_error,
+                loss_pose_perjoint=loss_pose_perjoint,
+                loss_pose_perbone=loss_pose_perbone,
+                loss_pose_perprojection=loss_pose_perprojection,
+                cardinality_error=cardinality_error,
+                memory=gpu_memory_usage,
+                gradnorm=grad_total_norm)
+        logger.info(msg)
+        is_msg=True
+
         if i % config.PRINT_FREQ == 0 and is_main_process():
-            gpu_memory_usage = torch.cuda.memory_allocated(0)
-            msg = \
-                'Epoch: [{0}][{1}/{2}]\t' \
-                'Time: {batch_time.val:.3f}s ({batch_time.avg:.3f}s)\t' \
-                'Speed: {speed:.1f} samples/s\t' \
-                'Data: {data_time.val:.3f}s ' '({data_time.avg:.3f}s)\t' \
-                'loss_ce: {loss_ce.val:.7f} ' '({loss_ce.avg:.7f})\t' \
-                'class_error: {class_error.val:.7f} ' \
-                '({class_error.avg:.7f})\t' \
-                'loss_pose_perjoint: {loss_pose_perjoint.val:.6f} ' \
-                '({loss_pose_perjoint.avg:.6f})\t' \
-                'loss_pose_perbone: {loss_pose_perbone.val:.6f} ' \
-                '({loss_pose_perbone.avg:.6f})\t' \
-                'loss_pose_perprojection: {loss_pose_perprojection.val:.6f} ' \
-                '({loss_pose_perprojection.avg:.6f})\t' \
-                'cardinality_error: {cardinality_error.val:.6f} ' \
-                '({cardinality_error.avg:.6f})\t' \
-                'Memory {memory:.1f}\t'\
-                'gradnorm {gradnorm:.2f}'.format(
-                  epoch, i, len(loader),
-                  batch_time=batch_time,
-                  speed=len(inputs) * inputs[0].size(0) / batch_time.val,
-                  data_time=data_time,
-                  loss_ce=loss_ce,
-                  class_error=class_error,
-                  loss_pose_perjoint=loss_pose_perjoint,
-                  loss_pose_perbone=loss_pose_perbone,
-                  loss_pose_perprojection=loss_pose_perprojection,
-                  cardinality_error=cardinality_error,
-                  memory=gpu_memory_usage,
-                  gradnorm=grad_total_norm)
-            logger.info(msg)
+            # gpu_memory_usage = torch.cuda.memory_allocated(0)
+            # msg = \
+            #     'Epoch: [{0}][{1}/{2}]\t' \
+            #     'Time: {batch_time.val:.3f}s ({batch_time.avg:.3f}s)\t' \
+            #     'Speed: {speed:.1f} samples/s\t' \
+            #     'Data: {data_time.val:.3f}s ' '({data_time.avg:.3f}s)\t' \
+            #     'loss_ce: {loss_ce.val:.7f} ' '({loss_ce.avg:.7f})\t' \
+            #     'class_error: {class_error.val:.7f} ' \
+            #     '({class_error.avg:.7f})\t' \
+            #     'loss_pose_perjoint: {loss_pose_perjoint.val:.6f} ' \
+            #     '({loss_pose_perjoint.avg:.6f})\t' \
+            #     'loss_pose_perbone: {loss_pose_perbone.val:.6f} ' \
+            #     '({loss_pose_perbone.avg:.6f})\t' \
+            #     'loss_pose_perprojection: {loss_pose_perprojection.val:.6f} ' \
+            #     '({loss_pose_perprojection.avg:.6f})\t' \
+            #     'cardinality_error: {cardinality_error.val:.6f} ' \
+            #     '({cardinality_error.avg:.6f})\t' \
+            #     'Memory {memory:.1f}\t'\
+            #     'gradnorm {gradnorm:.2f}'.format(
+            #       epoch, i, len(loader),
+            #       batch_time=batch_time,
+            #       speed=len(inputs) * inputs[0].size(0) / batch_time.val,
+            #       data_time=data_time,
+            #       loss_ce=loss_ce,
+            #       class_error=class_error,
+            #       loss_pose_perjoint=loss_pose_perjoint,
+            #       loss_pose_perbone=loss_pose_perbone,
+            #       loss_pose_perprojection=loss_pose_perprojection,
+            #       cardinality_error=cardinality_error,
+            #       memory=gpu_memory_usage,
+            #       gradnorm=grad_total_norm)
+            # logger.info(msg)
 
             prefix2 = '{}_{:08}'.format(
                 os.path.join(output_dir, 'train'), i)
             save_debug_3d_images(config, meta[0], pred, prefix2)
+    return msg if is_msg else None
 
 
 def validate_3d(config, model, loader, output_dir, threshold, num_views=5):

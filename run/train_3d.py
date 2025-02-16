@@ -243,8 +243,9 @@ def main():
     for epoch in range(start_epoch, end_epoch):
         print('Epoch: {}'.format(epoch))
         print('current lr {}'.format(optimizer.param_groups[0]["lr"]))
-        train_3d(config, model, optimizer, train_loader, epoch,
+        msg = train_3d(config, model, optimizer, train_loader, epoch,
                  final_output_dir, num_views=num_views)
+        print(msg)
 
         lr_scheduler.step()
 
